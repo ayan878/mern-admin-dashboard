@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@nivo/core": "^0.87.0",
+    "@reduxjs/toolkit": "^2.2.6",
+    "react-redux": "^9.1.2"
+  }
+}
