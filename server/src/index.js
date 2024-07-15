@@ -9,12 +9,16 @@ import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 
+//data imports
+import User from "./models/User.js";
+import { dataUser } from "./data/index.js";
+
 dotenv.config();
 const app = express();
 
 /* Middleware setup */
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); 
+app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cors());
@@ -37,13 +41,18 @@ const port = process.env.PORT || 7000;
 const mongoURI = process.env.MONGO_URL;
 
 mongoose
-  .connect(mongoURI, {
+  .connect(mongoURI, 
+    {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
+  }
+)
   .then(() => {
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
+
+      /*ONLY ADD DATA ONE TIME*/
+      // User.insertMany(dataUser);
     });
   })
   .catch((error) => {
