@@ -42,8 +42,8 @@ const mongoURI = process.env.MONGO_URL;
 
 mongoose
   .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
   })
   .then(() => {
     app.listen(port, () => {
