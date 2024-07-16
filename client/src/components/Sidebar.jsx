@@ -27,7 +27,6 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
-  ChevronRight,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -93,12 +92,13 @@ const navItems = [
   },
 ];
 
-function Sidebar({
+const Sidebar = ({
+  user,
   drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
   isNonMobile,
-}) {
+}) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ function Sidebar({
       {isSidebarOpen && (
         <Drawer
           open={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(!isSidebarOpen)}
+          onClose={() => setIsSidebarOpen(false)}
           variant="persistent"
           anchor="left"
           sx={{
@@ -121,7 +121,7 @@ function Sidebar({
             "& .MuiDrawer-paper": {
               color: theme.palette.secondary[200],
               backgroundColor: theme.palette.background.alt,
-              boxSizing: "border-box",
+              boxSixing: "border-box",
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
             },
@@ -146,12 +146,13 @@ function Sidebar({
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
                   return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 1rem" }}>
+                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
                       {text}
                     </Typography>
                   );
                 }
-                const lcText = text.toLocaleLowerCase();
+                const lcText = text.toLowerCase();
+
                 return (
                   <ListItem key={text} disablePadding>
                     <ListItemButton
@@ -172,7 +173,7 @@ function Sidebar({
                     >
                       <ListItemIcon
                         sx={{
-                          ml: "2reem",
+                          ml: "2rem",
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
@@ -181,22 +182,56 @@ function Sidebar({
                       >
                         {icon}
                       </ListItemIcon>
-                      <ListItemText primary={text}>
-                        {active === lcText && (
-                          <ChevronRight sx={{ ml: "auto" }} />
-                        )}
-                      </ListItemText>
+                      <ListItemText primary={text} />
+                      {active === lcText && (
+                        <ChevronRightOutlined sx={{ ml: "auto" }} />
+                      )}
                     </ListItemButton>
                   </ListItem>
                 );
               })}
             </List>
           </Box>
+
+          <Box>
+            <Divider />
+            <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
+              <Box
+                component="img"
+                alt="profile"
+                src={profileImage}
+                height="40px"
+                width="40px"
+                borderRadius="50%"
+                sx={{ objectFit: "cover" }}
+              />
+              <Box textAlign="left">
+                <Typography
+                  fontWeight="bold"
+                  fontSize="0.9rem"
+                  sx={{ color: theme.palette.secondary[100] }}
+                >
+                  {user.name}
+                </Typography>
+                <Typography
+                  fontSize="0.8rem"
+                  sx={{ color: theme.palette.secondary[200] }}
+                >
+                  {user.occupation}
+                </Typography>
+              </Box>
+              <SettingsOutlined
+                sx={{
+                  color: theme.palette.secondary[300],
+                  fontSize: "25px ",
+                }}
+              />
+            </FlexBetween>
+          </Box>
         </Drawer>
       )}
     </Box>
   );
-}
+};
 
 export default Sidebar;
-
